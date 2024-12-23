@@ -13,7 +13,7 @@ def checkmap(grid, start, des):
     n, m = len(grid), len(grid[0])  # grid 크기
     sx, sy = start[0],start[1]
     dx, dy = des[0], des[1]
-    queue = deque([[sx, sy, 0, [0,0]]])  # (x, y, 회전 수, 이전 방향)
+    queue = deque([[sx, sy, 0, [0,0]]])  # x, y, 회전 수, 이전 방향
     
     while 1:
         if len(queue) == 0:
