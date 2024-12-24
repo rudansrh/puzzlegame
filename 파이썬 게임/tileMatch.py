@@ -40,20 +40,20 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("타일 매치")
 
 #타일
-tile1 = pygame.image.load("이미지 저장\\그림1.png")
-tile2 = pygame.image.load("이미지 저장\\그림2.png")
-tile3 = pygame.image.load("이미지 저장\\그림3.png")
-tile4 = pygame.image.load("이미지 저장\\그림4.png")
-tile5 = pygame.image.load("이미지 저장\\그림5.png")
-tile6 = pygame.image.load("이미지 저장\\그림6.png")
-tile7 = pygame.image.load("이미지 저장\\그림7.png")
+tile1 = pygame.image.load("파이썬 게임\\이미지 저장\\그림1.png")
+tile2 = pygame.image.load("파이썬 게임\\이미지 저장\\그림2.png")
+tile3 = pygame.image.load("파이썬 게임\\이미지 저장\\그림3.png")
+tile4 = pygame.image.load("파이썬 게임\\이미지 저장\\그림4.png")
+tile5 = pygame.image.load("파이썬 게임\\이미지 저장\\그림5.png")
+tile6 = pygame.image.load("파이썬 게임\\이미지 저장\\그림6.png")
+tile7 = pygame.image.load("파이썬 게임\\이미지 저장\\그림7.png")
 tiles = [None,tile1,tile2,tile3,tile4,tile5,tile6,tile7]
-check = pygame.image.load("이미지 저장\\check.png")
+check = pygame.image.load("파이썬 게임\\이미지 저장\\check.png")
 
-wrong = pygame.image.load("이미지 저장\\wrong.png")
+wrong = pygame.image.load("파이썬 게임\\이미지 저장\\wrong.png")
 wrong = pygame.transform.scale(wrong, (800,550))
 
-myFont = pygame.font.Font("CookieRun Regular.ttf", 30)
+myFont = pygame.font.Font("파이썬 게임\\CookieRun Regular.ttf", 30)
 
 #색 설정
 black = (0,0,0)
@@ -88,9 +88,9 @@ for m in range(len(stages)):
         tile_height = screen_height // map_y * 0.8  # 세로 타일 크기
         tile_size = min(tile_width, tile_height)  # 정사각형 크기로 설정
         # 이미지를 타일 크기에 맞게 조정
-        tiles[i] = pygame.transform.scale(tiles[i], (int(tile_size) * 0.9, int(tile_size)))
+        tiles[i] = pygame.transform.scale(tiles[i], (int(tile_size), int(tile_size)))
         
-    check = pygame.transform.scale(check, (int(tile_size) * 0.9, int(tile_size) * 0.9))
+    check = pygame.transform.scale(check, (int(tile_size), int(tile_size)))
 
     # 중앙에 배치하기 위한 시작 좌표 계산
     total_width = tile_size * map_x
@@ -123,9 +123,9 @@ for m in range(len(stages)):
             screen.blit(stageText, (325, 0))
         elif stage > 0:
             elapsed_time = (pygame.time.get_ticks() - start_tick) / 1000
-            timeText = myFont.render(f"{elapsed_time}", True, green)
+            timeText = myFont.render(f"{elapsed_time}", True, (41,127,55))
             stageText = myFont.render(f"stage ({stage}/{len(stages)-3})", True, black)
-            screen.blit(timeText, (0, 0))
+            screen.blit(timeText, (20, 0))
             screen.blit(stageText, (325, 0))
         
         # 타일 이미지 그리기
@@ -194,12 +194,12 @@ for m in range(len(stages)):
                             break
         pygame.display.flip()
 result = elapsed_time
+myFont = pygame.font.Font("파이썬 게임\\CookieRun Regular.ttf", 60)
+screen.fill(bgcolor)
+resultText = myFont.render(f"걸린 시간 : {result}",True, blue)
+screen.blit(resultText, (180,200))
+pygame.display.flip()
 while 1:
-    screen.fill(bgcolor)
-    myFont = pygame.font.Font("CookieRun Regular.ttf", 60)
-    resultText = myFont.render(f"걸린 시간 : {result}",True, blue)
-    screen.blit(resultText, (180,200))
-    pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
