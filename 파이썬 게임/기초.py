@@ -39,17 +39,20 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("퍼즐게임")
 
 #타일
-tile1 = pygame.image.load("C:\\Users\\USER\\Desktop\\파이썬 게임\\이미지 저장\\그림1.png")
-tile2 = pygame.image.load("C:\\Users\\USER\\Desktop\\파이썬 게임\\이미지 저장\\그림2.png")
-tile3 = pygame.image.load("C:\\Users\\USER\\Desktop\\파이썬 게임\\이미지 저장\\그림3.png")
-tile4 = pygame.image.load("C:\\Users\\USER\\Desktop\\파이썬 게임\\이미지 저장\\그림4.png")
-tile5 = pygame.image.load("C:\\Users\\USER\\Desktop\\파이썬 게임\\이미지 저장\\그림5.png")
-tile6 = pygame.image.load("C:\\Users\\USER\\Desktop\\파이썬 게임\\이미지 저장\\그림6.png")
-tile7 = pygame.image.load("C:\\Users\\USER\\Desktop\\파이썬 게임\\이미지 저장\\그림7.png")
+tile1 = pygame.image.load("C:\\Users\\USER\\Desktop\puzzlegame\\파이썬 게임\\이미지 저장\\그림1.png")
+tile2 = pygame.image.load("C:\\Users\\USER\\Desktop\puzzlegame\\파이썬 게임\\이미지 저장\\그림2.png")
+tile3 = pygame.image.load("C:\\Users\\USER\\Desktop\puzzlegame\\파이썬 게임\\이미지 저장\\그림3.png")
+tile4 = pygame.image.load("C:\\Users\\USER\\Desktop\puzzlegame\\파이썬 게임\\이미지 저장\\그림4.png")
+tile5 = pygame.image.load("C:\\Users\\USER\\Desktop\puzzlegame\\파이썬 게임\\이미지 저장\\그림5.png")
+tile6 = pygame.image.load("C:\\Users\\USER\\Desktop\puzzlegame\\파이썬 게임\\이미지 저장\\그림6.png")
+tile7 = pygame.image.load("C:\\Users\\USER\\Desktop\puzzlegame\\파이썬 게임\\이미지 저장\\그림7.png")
 tiles = [None,tile1,tile2,tile3,tile4,tile5,tile6,tile7]
+check = pygame.image.load("C:\\Users\\USER\\Desktop\\puzzlegame\\파이썬 게임\\이미지 저장\\check.png")
 
-wrong = pygame.image.load("C:\\Users\\USER\\Desktop\\파이썬 게임\\이미지 저장\\wrong.png")
+wrong = pygame.image.load("C:\\Users\\USER\\Desktop\\puzzlegame\\파이썬 게임\\이미지 저장\\wrong.png")
 wrong = pygame.transform.scale(wrong, (800,550))
+
+myFont = pygame.font.SysFont(None, 50)
 
 #색 설정
 black = (0,0,0)
@@ -81,6 +84,7 @@ for i in range(1,len(tiles)):
 
     # 이미지를 타일 크기에 맞게 조정
     tiles[i] = pygame.transform.scale(tiles[i], (int(tile_size)*0.9, int(tile_size)))
+check = pygame.transform.scale(check, (int(tile_size)*0.9, int(tile_size)*0.9))
 
 # 중앙에 배치하기 위한 시작 좌표 계산
 total_width = tile_size * map_x
@@ -96,10 +100,25 @@ for i in range(map_y):
         tilepos.append([pygame.Rect(x,y,tile_size,tile_size),i,j])
 
 nowcheck = 0
+checkpos = (0,0)
 checkpoint = []
 checkthing = 0
+stage = 1
+
+clock = pygame.time.Clock()
+start_tick = pygame.time.get_ticks()
 running = True
 while running:
+    screen.fill(bgcolor)
+    clock.tick(60)
+    
+    if stage > 0:
+        elapsed_time = (pygame.time.get_ticks()-start_tick)/1000
+        timeText = myFont.render(f"{elapsed_time}", True, black)
+        screen.blit(timeText, (0,0))
+    
+    if checkthing == 1:
+        screen.blit(check,checkpos)
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
             running = False
@@ -133,6 +152,7 @@ while running:
                         cmap[tile_x][tile_y] = 4
                         cmap[checkpoint[0]][checkpoint[1]] = 4
                         mini = checkmap(cmap,s,e)
+                        print(mini)
                         if len(mini) == 0 or min(mini) > 3:
                             screen.blit(wrong,(0,0))
                             pygame.display.flip()
@@ -148,8 +168,6 @@ while running:
                             print("성공")
                             running = False
                             break
-            
-    screen.fill(bgcolor)
     
     # 타일 이미지 그리기
     for i in range(map_y):
@@ -158,6 +176,8 @@ while running:
             y = start_y + i * tile_size
             if map[i][j] != 0:
                 screen.blit(tiles[map[i][j]], (x, y))
+            if nowcheck == 1 and i == checkpoint[0] and j == checkpoint[1]:
+                screen.blit(check, (x,y))
             
     pygame.display.flip()
     
