@@ -40,20 +40,20 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("타일 매치")
 
 #타일
-tile1 = pygame.image.load("파이썬 게임\\이미지 저장\\그림1.png")
-tile2 = pygame.image.load("파이썬 게임\\이미지 저장\\그림2.png")
-tile3 = pygame.image.load("파이썬 게임\\이미지 저장\\그림3.png")
-tile4 = pygame.image.load("파이썬 게임\\이미지 저장\\그림4.png")
-tile5 = pygame.image.load("파이썬 게임\\이미지 저장\\그림5.png")
-tile6 = pygame.image.load("파이썬 게임\\이미지 저장\\그림6.png")
-tile7 = pygame.image.load("파이썬 게임\\이미지 저장\\그림7.png")
+tile1 = pygame.image.load("이미지 저장\\그림1.png")
+tile2 = pygame.image.load("이미지 저장\\그림2.png")
+tile3 = pygame.image.load("이미지 저장\\그림3.png")
+tile4 = pygame.image.load("이미지 저장\\그림4.png")
+tile5 = pygame.image.load("이미지 저장\\그림5.png")
+tile6 = pygame.image.load("이미지 저장\\그림6.png")
+tile7 = pygame.image.load("이미지 저장\\그림7.png")
 tiles = [None,tile1,tile2,tile3,tile4,tile5,tile6,tile7]
-check = pygame.image.load("파이썬 게임\\이미지 저장\\check.png")
+check = pygame.image.load("이미지 저장\\check.png")
 
-wrong = pygame.image.load("파이썬 게임\\이미지 저장\\wrong.png")
+wrong = pygame.image.load("이미지 저장\\wrong.png")
 wrong = pygame.transform.scale(wrong, (800,550))
 
-myFont = pygame.font.Font("파이썬 게임\\CookieRun Regular.ttf", 30)
+myFont = pygame.font.Font("CookieRun Regular.ttf", 30)
 
 #색 설정
 black = (0,0,0)
@@ -194,7 +194,7 @@ for m in range(len(stages)):
                             break
         pygame.display.flip()
 result = elapsed_time
-myFont = pygame.font.Font("파이썬 게임\\CookieRun Regular.ttf", 60)
+myFont = pygame.font.Font("CookieRun Regular.ttf", 60)
 screen.fill(bgcolor)
 resultText = myFont.render(f"걸린 시간 : {result}",True, blue)
 screen.blit(resultText, (180,200))
