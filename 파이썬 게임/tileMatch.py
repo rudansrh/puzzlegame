@@ -2,7 +2,6 @@ import pygame
 import sys
 from collections import deque
 import time
-
 pygame.init()
 
 def checkmap(grid, start, des):
@@ -49,9 +48,8 @@ tile6 = pygame.image.load("이미지 저장\\그림6.png")
 tile7 = pygame.image.load("이미지 저장\\그림7.png")
 tiles = [None,tile1,tile2,tile3,tile4,tile5,tile6,tile7]
 check = pygame.image.load("이미지 저장\\check.png")
-
-wrong = pygame.image.load("이미지 저장\\wrong.png")
-wrong = pygame.transform.scale(wrong, (800,550))
+again = pygame.image.load("이미지 저장\\again.png")
+again = pygame.transform.scale(again,(70,70))
 
 myFont = pygame.font.Font("CookieRun Regular.ttf", 30)
 
@@ -68,10 +66,22 @@ stages = [[[1,1],[2,3],[2,3]], #튜토리얼1
         [[3,4,3],[1,4,1]], #튜토리얼2
         [[5,4,3],[3,4,5]] #튜토리얼3
         ,[[1,2,3,1,4,1],[6,7,3,4,4,1], #1단계
-        [7,3,7,4,6,2], [7,6,3,6,2,2]]]
+        [7,3,7,4,6,2], [7,6,3,6,2,2]],
+        [[7,7,6,5,7,5],[3,2,1,6,5,1], #2단계
+        [2,1,6,5,6,2],[1,7,3,3,3,2]]]
+map = []
 for m in range(len(stages)):
-    map = stages[m]
+    map = []
+    for i in range(len(stages[m])):
+        map.append([])
+        for j in range(len(stages[m][0])):
+            map[i].append(stages[m][i][j])
     checking = len(map) * len(map[0])
+    for i in range(len(map)):
+        for j in range(len(map[0])):
+            if map[i][j] == 0:
+                checking -= 1
+    mcheck = checking
     
     # 맵 외각 설정
     for i in range(len(map)):
@@ -112,17 +122,25 @@ for m in range(len(stages)):
     stage = m-2
 
     clock = pygame.time.Clock()
-    start_tick = pygame.time.get_ticks()
+    if m == 3:
+        start_tick = pygame.time.get_ticks()
     running = True
     
+    wrong = False
+    wrongT = 0
     while running:
-        screen.fill(bgcolor)
+        if not wrong:
+            screen.fill(bgcolor)
+        else:
+            screen.fill((245,68,68))
+            if (pygame.time.get_ticks() - wrongT)/1000 > 0.3:
+                wrong = False
         clock.tick(60)
         if stage <= 0:
             stageText = myFont.render(f"튜토리얼 - {stage+3}", True,black)
             screen.blit(stageText, (325, 0))
         elif stage > 0:
-            elapsed_time = (pygame.time.get_ticks() - start_tick) / 1000
+            elapsed_time = round((pygame.time.get_ticks() - start_tick) / 1000,1)
             timeText = myFont.render(f"{elapsed_time}", True, (41,127,55))
             stageText = myFont.render(f"stage ({stage}/{len(stages)-3})", True, black)
             screen.blit(timeText, (20, 0))
@@ -178,9 +196,8 @@ for m in range(len(stages)):
                             mini = checkmap(cmap, s, e)
                             print(mini)
                             if len(mini) == 0 or min(mini) > 3:
-                                screen.blit(wrong, (0, 0))
-                                pygame.display.flip()
-                                time.sleep(0.5)
+                                wrong = True
+                                wrongT = pygame.time.get_ticks()
                             else:
                                 map[tile_x][tile_y] = 0
                                 map[checkpoint[0]][checkpoint[1]] = 0
@@ -189,10 +206,37 @@ for m in range(len(stages)):
                             checkpoint = []
                             checkthing = 0
                             if checking == 0:
-                                print("성공")
                                 running = False
                             break
-        pygame.display.flip()
+                if pygame.Rect(700,20,70,70).collidepoint(mouse_pos):
+                    map = []
+                    for i in range(len(stages[m])):
+                        map.append([])
+                        for j in range(len(stages[m][0])):
+                            map[i].append(stages[m][i][j])
+                    for p in range(len(map)):
+                        map[p].insert(0, 0)
+                        map[p].append(0)
+                    map.insert(0, [0 for _ in range(len(map[0]))])
+                    map.append([0 for _ in range(len(map[0]))])
+                    nowcheck = 0
+                    checkpos = (0, 0)
+                    checkpoint = []
+                    checkthing = 0
+                    checking = mcheck
+                    
+            # 타일 이미지 그리기
+            for i in range(map_y):
+                for j in range(map_x):
+                    x = start_x + j * tile_size
+                    y = start_y + i * tile_size
+                    if map[i][j] != 0:
+                        screen.blit(tiles[map[i][j]], (x, y))
+                    if nowcheck == 1 and i == checkpoint[0] and j == checkpoint[1]:
+                        screen.blit(check, (x, y))
+            screen.blit(again, (700, 20))    
+            pygame.display.flip()
+        
 result = elapsed_time
 myFont = pygame.font.Font("CookieRun Regular.ttf", 60)
 screen.fill(bgcolor)
