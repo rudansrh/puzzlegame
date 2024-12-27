@@ -46,7 +46,10 @@ tile4 = pygame.image.load("이미지 저장\\그림4.png")
 tile5 = pygame.image.load("이미지 저장\\그림5.png")
 tile6 = pygame.image.load("이미지 저장\\그림6.png")
 tile7 = pygame.image.load("이미지 저장\\그림7.png")
-tiles = [None,tile1,tile2,tile3,tile4,tile5,tile6,tile7]
+tile8 = pygame.image.load("이미지 저장\\그림8.png")
+tile9 = pygame.image.load("이미지 저장\\그림9.png")
+tile10 = pygame.image.load("이미지 저장\\그림10.png")
+tiles = [None,tile1,tile2,tile3,tile4,tile5,tile6,tile7,tile8, tile9,tile10]
 check = pygame.image.load("이미지 저장\\check.png")
 again = pygame.image.load("이미지 저장\\again.png")
 again = pygame.transform.scale(again,(70,70))
@@ -62,13 +65,18 @@ blue = (0, 0, 255)
 yellow = (255, 255, 0)
 bgcolor = (255, 255, 200)
 
-stages = [[[1,1],[2,3],[2,3]], #튜토리얼1
+stages = [[[1,1],[2,3],[2,3]], #튜토리얼1 
         [[3,4,3],[1,4,1]], #튜토리얼2
         [[5,4,3],[3,4,5]] #튜토리얼3
         ,[[1,2,3,1,4,1],[6,7,3,4,4,1], #1단계
         [7,3,7,4,6,2], [7,6,3,6,2,2]],
         [[7,7,6,5,7,5],[3,2,1,6,5,1], #2단계
-        [2,1,6,5,6,2],[1,7,3,3,3,2]]]
+        [2,1,6,5,6,2],[1,7,3,3,3,2]],
+        [[3,4,5,6,7,2,2,3],[4,5,6,8,7,7,8,7], #3단계
+         [5,6,2,1,2,2,1,4],[6,3,2,1,3,1,4,5]],
+         [[1,2,3,3,1,4,3,5],[6,7,6,4,7,1,8,9],
+          [5,10,6,2,1,4,9,8],[2,5,10,5,4,8,8,7],
+          [7,3,8,2,6,8,2,2]]]
 map = []
 for m in range(len(stages)):
     map = []
