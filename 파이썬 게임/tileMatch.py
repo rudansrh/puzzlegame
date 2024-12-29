@@ -53,6 +53,10 @@ tiles = [None,tile1,tile2,tile3,tile4,tile5,tile6,tile7,tile8, tile9,tile10]
 check = pygame.image.load("이미지 저장\\check.png")
 again = pygame.image.load("이미지 저장\\again.png")
 again = pygame.transform.scale(again,(70,70))
+tjfaud = pygame.image.load("이미지 저장\\tjfaud.png")
+tjfaud = pygame.transform.scale(tjfaud,(600,450))
+exitt = pygame.image.load("이미지 저장\\exit.png")
+exitt = pygame.transform.scale(exitt,(50,50))
 
 myFont = pygame.font.Font("CookieRun Regular.ttf", 30)
 
@@ -73,11 +77,12 @@ stages = [[[1,1],[2,3],[2,3]], #튜토리얼1
         [[7,7,6,5,7,5],[3,2,1,6,5,1], #2단계
         [2,1,6,5,6,2],[1,7,3,3,3,2]],
         [[3,4,5,6,7,2,2,3],[4,5,6,8,7,7,8,7], #3단계
-         [5,6,2,1,2,2,1,4],[6,3,2,1,3,1,4,5]],
-         [[1,2,3,3,1,4,3,5],[6,7,6,4,7,1,8,9],
-          [5,10,6,2,1,4,9,8],[2,5,10,5,4,8,8,7],
-          [7,3,8,2,6,8,2,2]]]
+        [5,6,2,1,2,2,1,4],[6,3,2,1,3,1,4,5]],
+        [[1,2,3,3,1,4,3,5],[6,7,6,4,7,1,8,9],
+        [5,10,6,2,1,4,9,8],[2,5,10,5,4,8,8,7],
+        [7,3,8,2,6,8,2,2]]]
 map = []
+start = 0
 for m in range(len(stages)):
     map = []
     for i in range(len(stages[m])):
@@ -132,10 +137,11 @@ for m in range(len(stages)):
     clock = pygame.time.Clock()
     if m == 3:
         start_tick = pygame.time.get_ticks()
-    running = True
     
     wrong = False
     wrongT = 0
+    
+    running = True
     while running:
         if not wrong:
             screen.fill(bgcolor)
@@ -143,7 +149,7 @@ for m in range(len(stages)):
             screen.fill((245,68,68))
             if (pygame.time.get_ticks() - wrongT)/1000 > 0.3:
                 wrong = False
-        clock.tick(60)
+
         if stage <= 0:
             stageText = myFont.render(f"튜토리얼 - {stage+3}", True,black)
             screen.blit(stageText, (325, 0))
@@ -170,6 +176,10 @@ for m in range(len(stages)):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
+                if start == 0:
+                    if pygame.Rect(600,70,50,50).collidepoint(mouse_pos):
+                        start = 1
+                    continue
                 for k in range(len(tilepos)):
                     if tilepos[k][0].collidepoint(mouse_pos):
                         if map[tilepos[k][1]][tilepos[k][2]] == 0:
@@ -232,7 +242,9 @@ for m in range(len(stages)):
                     checkpoint = []
                     checkthing = 0
                     checking = mcheck
-                    
+            
+            if start == 0:
+                continue        
             # 타일 이미지 그리기
             for i in range(map_y):
                 for j in range(map_x):
@@ -244,6 +256,14 @@ for m in range(len(stages)):
                         screen.blit(check, (x, y))
             screen.blit(again, (700, 20))    
             pygame.display.flip()
+            
+        if start == 0:
+            screen.fill(bgcolor)        
+            screen.blit(tjfaud, (100,40))
+            screen.blit(exitt, (600,70))
+            pygame.display.flip()
+            continue
+        clock.tick(60)
         
 result = elapsed_time
 myFont = pygame.font.Font("CookieRun Regular.ttf", 60)
